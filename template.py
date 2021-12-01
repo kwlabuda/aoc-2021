@@ -1,6 +1,11 @@
 import re
 
 
+def read_int_list():
+    with open("input.txt") as f:
+        return [int(line) for line in f]
+
+
 def part1():
     pass
 
