@@ -2,8 +2,15 @@ import re
 
 
 def read_int_list():
+    lines = []
     with open("input.txt") as f:
-        return [int(line) for line in f]
+        for line in f:
+            line = line.strip()
+            if not line:
+                break
+            entry = int(line)
+            lines.append(entry)
+    return lines
 
 
 def part1():
@@ -15,5 +22,7 @@ def part2():
 
 
 if __name__ == "__main__":
-    print(f"Part 1:\n{part1()}")
-    print(f"Part 2:\n{part2()}")
+    print(f"Part 1:")
+    print(part1())
+    print(f"Part 2:")
+    print(part2())
