@@ -1,14 +1,15 @@
-import re
+
+def parse_text(text, sep=None, trans=None):
+    if not trans:
+        trans = lambda x: x
+    return [trans(s) for s in text.split(sep)]
 
 
-def read_input(sep, trans):
+def read_input():
     with open("input.txt") as f:
         text = f.read().strip()
-    return parse_text(text, sep, trans)
-
-
-def parse_text(text, sep, trans):
-    return [trans(s) for s in text.split(sep)]
+    trans = lambda x: x
+    return parse_text(text, "\n", trans)
 
 
 def part1():
