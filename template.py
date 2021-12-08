@@ -1,16 +1,14 @@
 import re
 
 
-def read_int_list():
-    lines = []
+def read_input(sep, trans):
     with open("input.txt") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                break
-            entry = int(line)
-            lines.append(entry)
-    return lines
+        text = f.read().strip()
+    return parse_text(text, sep, trans)
+
+
+def parse_text(text, sep, trans):
+    return [trans(s) for s in text.split(sep)]
 
 
 def part1():
