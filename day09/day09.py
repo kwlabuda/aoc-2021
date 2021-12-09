@@ -47,28 +47,30 @@ def part1():
     return sum(heights) + len(low_points)
 
 
-def get_basin(x, y, basin):
-    if (x, y) in basin:
-        return
-    if HMAP[y][x] == 9:
-        return
-    basin.add((x, y))
-    if x > 0:
-        get_basin(x - 1, y, basin)
-    if x < X_END:
-        get_basin(x + 1, y, basin)
-    if y > 0:
-        get_basin(x, y - 1, basin)
-    if y < Y_END:
-        get_basin(x, y + 1, basin)
+def get_basin(x, y):
+    basin = set()
+    stack = [(x, y)]
+    while len(stack) > 0:
+        x, y = stack.pop()
+        if (x, y) in basin:
+            continue
+        if x < 0 or x > X_END or y < 0 or y > Y_END:
+            continue
+        if HMAP[y][x] == 9:
+            continue
+        basin.add((x, y))
+        stack.append((x - 1, y))
+        stack.append((x + 1, y))
+        stack.append((x, y - 1))
+        stack.append((x, y + 1))
+    return basin
 
 
 def part2():
     low_points = get_lowpoints()
     sizes = []
     for x, y in low_points:
-        basin = set()
-        get_basin(x, y, basin)
+        basin = get_basin(x, y)
         sizes.append(len(basin))
     sizes.sort(reverse=True)
     return sizes[0] * sizes[1] * sizes[2]
