@@ -19,17 +19,23 @@ X_END = WIDTH - 1
 Y_END = HEIGHT - 1
 
 
+def adjacent_points(x, y):
+    points = []
+    if x > 0:
+        points.append((x - 1, y))
+    if x < X_END:
+        points.append((x + 1, y))
+    if y > 0:
+        points.append((x, y - 1))
+    if y < Y_END:
+        points.append((x, y + 1))
+    return points
+
+
 def is_lowpoint(x, y):
     h = HMAP[y][x]
-    if x > 0 and HMAP[y][x - 1] <= h:
-        return False
-    if x < X_END and HMAP[y][x + 1] <= h:
-        return False
-    if y > 0 and HMAP[y - 1][x] <= h:
-        return False
-    if y < Y_END and HMAP[y + 1][x] <= h:
-        return False
-    return True
+    pts = adjacent_points(x, y)
+    return all(HMAP[v][u] > h for u, v in pts)
 
 
 def get_lowpoints():
@@ -54,15 +60,10 @@ def get_basin(x, y):
         x, y = stack.pop()
         if (x, y) in basin:
             continue
-        if x < 0 or x > X_END or y < 0 or y > Y_END:
-            continue
         if HMAP[y][x] == 9:
             continue
         basin.add((x, y))
-        stack.append((x - 1, y))
-        stack.append((x + 1, y))
-        stack.append((x, y - 1))
-        stack.append((x, y + 1))
+        stack += adjacent_points(x, y)
     return basin
 
 
