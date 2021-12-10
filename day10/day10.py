@@ -23,9 +23,8 @@ def parse_line(line):
     for c in line:
         if c in OPEN:
             stack.append(c)
-        elif c in PAIRS:
-            if stack.pop() != PAIRS[c]:
-                return POINTS1[c], None
+        elif stack.pop() != PAIRS[c]:
+            return POINTS1[c], None
     return 0, stack
 
 
