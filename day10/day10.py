@@ -25,7 +25,7 @@ def parse_line(line):
             stack.append(c)
         elif c in PAIRS:
             if stack.pop() != PAIRS[c]:
-                return POINTS1[c], stack
+                return POINTS1[c], None
     return 0, stack
 
 
@@ -42,8 +42,8 @@ def part2():
     lines = read_input()
     scores = []
     for line in lines:
-        pts, stack = parse_line(line)
-        if pts != 0:
+        _, stack = parse_line(line)
+        if not stack:
             continue
         stack.reverse()
         pts = 0
