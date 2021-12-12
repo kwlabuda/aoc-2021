@@ -26,12 +26,12 @@ def find_paths(allow_twice):
         connections[a].add(b)
         connections[b].add(a)
     # visit caves
-    paths = []
+    paths = 0
     stack = [(START, set(), not allow_twice)]
     while len(stack) > 0:
         cave, visited, twice = stack.pop()
         if cave == END:
-            paths.append(visited)
+            paths += 1
             continue
         if cave in visited and cave.islower():
             if twice or cave == START:
@@ -39,7 +39,7 @@ def find_paths(allow_twice):
             twice = True
         visited.add(cave)
         stack += [(dst, set(visited), twice) for dst in connections[cave]]
-    return len(paths)
+    return paths
 
 
 def part1():
