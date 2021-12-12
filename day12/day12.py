@@ -33,11 +33,13 @@ def find_paths(allow_twice):
         if cave == END:
             paths += 1
             continue
-        if cave in visited and cave.islower():
-            if not allow_twice or cave == START:
-                continue
-            allow_twice = False
-        visited.add(cave)
+        if cave.islower():
+            if cave in visited:
+                if not allow_twice or cave == START:
+                    continue
+                allow_twice = False
+            else:
+                visited.add(cave)
         for dst in connections[cave]:
             stack.append((dst, set(visited), allow_twice))
     return paths
