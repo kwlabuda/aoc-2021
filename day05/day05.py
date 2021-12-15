@@ -48,7 +48,7 @@ def count_points(allow_diagonal):
 
 
 if __name__ == "__main__":
-    print(f"Part 1:")
+    print("Part 1:")
     print(count_points(False))
-    print(f"Part 2:")
+    print("Part 2:")
     print(count_points(True))

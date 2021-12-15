@@ -59,16 +59,8 @@ def find_path(tiles):
     raise ValueError()
 
 
-def part1():
-    return find_path(1)
-
-
-def part2():
-    return find_path(5)
-
-
 if __name__ == "__main__":
-    print(f"Part 1:")
-    print(part1())
-    print(f"Part 2:")
-    print(part2())
+    print("Part 1:")
+    print(find_path(1))
+    print("Part 2:")
+    print(find_path(5))

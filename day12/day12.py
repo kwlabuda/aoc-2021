@@ -45,16 +45,8 @@ def find_paths(allow_twice):
     return paths
 
 
-def part1():
-    return find_paths(False)
-
-
-def part2():
-    return find_paths(True)
-
-
 if __name__ == "__main__":
-    print(f"Part 1:")
-    print(part1())
-    print(f"Part 2:")
-    print(part2())
+    print("Part 1:")
+    print(find_paths(False))
+    print("Part 2:")
+    print(find_paths(True))

@@ -64,7 +64,7 @@ def part2():
 
 
 if __name__ == "__main__":
-    print(f"Part 1:")
+    print("Part 1:")
     print(part1())
-    print(f"Part 2:")
+    print("Part 2:")
     part2()
