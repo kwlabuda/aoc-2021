@@ -3,9 +3,7 @@ class BitArray():
     def __init__(self, hex_str):
         hex_num = int(hex_str, 16)
         num_bits = len(hex_str) * 4
-        bit_str = f"{hex_num:b}"
-        padding = "0" * (num_bits - len(bit_str))
-        self.bits = padding + bit_str
+        self.bits = f"{hex_num:0{num_bits}b}"
         self.pos = 0
 
     def read_chars(self, size):
