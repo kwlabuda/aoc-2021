@@ -16,21 +16,22 @@ class BitArray():
     def read_bits(self, size):
         return int(self.read_chars(size), 2)
 
+    def read_literal(self):
+        lit = ""
+        while True:
+            b = self.read_bits(1)
+            lit += self.read_chars(4)
+            if b == 0:
+                break
+        return int(lit, 2)
+
     def read_packet(self):
         version = self.read_bits(3)
         type_id = self.read_bits(3)
         value = None
 
         if type_id == 4:
-            # literal value
-            lit = ""
-            while True:
-                b = self.read_bits(1)
-                lit += self.bits[self.pos:self.pos + 4]
-                self.pos += 4
-                if b == 0:
-                    break
-            value = int(lit, 2)
+            value = self.read_literal()
         else:
             # parse subpackets
             len_type = self.read_bits(1)
