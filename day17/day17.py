@@ -22,7 +22,7 @@ def fire_probe(x_vel, y_vel, x1, x2, y1, y2):
         x += x_vel
         y += y_vel
         # check if in target
-        if x >= x1 and x <= x2 and y >= y1 and y <= y2:
+        if x1 <= x <= x2 and y1 <= y <= y2:
             return True
         # update velocity
         if x_vel > 0:
