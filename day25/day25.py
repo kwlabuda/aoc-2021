@@ -2,51 +2,57 @@
 def read_input():
     with open("input.txt") as f:
         text = f.read().strip()
-    return [list(line) for line in text.splitlines()]
+    cukes = [line for line in text.splitlines()]
+    east_cukes = set()
+    south_cukes = set()
+    width = len(cukes[0])
+    height = len(cukes)
+    for y in range(height):
+        for x in range(width):
+            cuke = cukes[y][x]
+            if cuke == ">":
+                east_cukes.add((x, y))
+            elif cuke == "v":
+                south_cukes.add((x, y))
+    return east_cukes, south_cukes, width, height
 
 
 def print_cukes(cukes):
     print("\n".join("".join(row) for row in cukes))
 
 
-def part1():
-    cukes = read_input()
-    width = len(cukes[0])
-    height = len(cukes)
-    step = 0
+def move_herd(cukes, other, dx, dy, width, height):
+    moved = False
+    next_cukes = set()
+    for x, y in cukes:
+        # move by (dx, dy)
+        nx = (x + dx) % width
+        ny = (y + dy) % height
+        pt = (nx, ny)
+        if pt in cukes or pt in other:
+            # can't move cuke
+            next_cukes.add((x, y))
+        else:
+            # move cuke
+            next_cukes.add(pt)
+            moved = True
+    return next_cukes, moved
 
+
+def part1():
+    east_cukes, south_cukes, width, height = read_input()
+    step = 0
     while True:
         step += 1
-        moved = False
-        next_cukes = [list(row) for row in cukes]
         # move east
-        for y in range(height):
-            for x in range(width):
-                cuke = cukes[y][x]
-                if cuke != ">":
-                    continue
-                nx = (x + 1) % width
-                if cukes[y][nx] == ".":
-                    next_cukes[y][x] = "."
-                    next_cukes[y][nx] = ">"
-                    moved = True
-        cukes = next_cukes
-        next_cukes = [list(row) for row in cukes]
+        east_cukes, east_moved = move_herd(
+            east_cukes, south_cukes, 1, 0, width, height)
         # move south
-        for y in range(height):
-            for x in range(width):
-                cuke = cukes[y][x]
-                if cuke != "v":
-                    continue
-                ny = (y + 1) % height
-                if cukes[ny][x] == ".":
-                    next_cukes[y][x] = "."
-                    next_cukes[ny][x] = "v"
-                    moved = True
+        south_cukes, south_moved = move_herd(
+            south_cukes, east_cukes, 0, 1, width, height)
         # check if done moving
-        if not moved:
+        if not east_moved and not south_moved:
             break
-        cukes = next_cukes
     return step
 
 
