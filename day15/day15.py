@@ -1,5 +1,4 @@
 import heapq
-import math
 
 
 def parse_text(text, sep=None, trans=None):
@@ -25,20 +24,23 @@ def find_path(tiles):
     tile_height = len(cave)
     width = tile_width * tiles
     height = tile_height * tiles
+    start = (0, 0)
     end = (width - 1, height - 1)
 
-    # set tentative risk to infinity for all except start
-    best_risks = [[math.inf for _ in range(width)] for _ in range(height)]
-    best_risks[0][0] = 0
-    # priority queue with risk, x, y
-    pq = [(0, 0, 0)]
+    # heuristic function
+    h = lambda target, pos: (target[0] - pos[0]) + (target[1] - pos[1])
+    # cheapest paths for each node
+    g_score = {start: 0}
+    # priority queue of discovered nodes sorted by f score
+    pq = [(h(end, start), *start)]
 
     while len(pq) > 0:
-        risk, x, y = heapq.heappop(pq)
+        _, x, y = heapq.heappop(pq)
         pos = (x, y)
+        risk = g_score[pos]
         if pos == end:
             return risk
-        # check unvisited neighbors
+        # for each neighbor
         for dx, dy in ADJ:
             u = x + dx
             v = y + dy
@@ -47,15 +49,16 @@ def find_path(tiles):
             # compute cumulative risk
             rx, row = divmod(u, tile_width)
             ry, col = divmod(v, tile_height)
-            next_risk = cave[col][row] + rx + ry
-            if next_risk > 9:
-                next_risk -= 9
-            next_risk += risk
+            step = cave[col][row] + rx + ry
+            if step > 9:
+                step -= 9
+            next_risk = risk + step
             # check for lower risk path
-            if next_risk >= best_risks[v][u]:
-                continue
-            best_risks[v][u] = next_risk
-            heapq.heappush(pq, (next_risk, u, v))
+            n = (u, v)
+            if n not in g_score or next_risk < g_score[n]:
+                g_score[n] = next_risk
+                f_score = next_risk + h(end, n)
+                heapq.heappush(pq, (f_score, u, v))
     raise ValueError()
 
 
